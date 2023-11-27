@@ -19,8 +19,13 @@ const CartPage = () => {
         setAddedProducts({ data: addedItems, loading: false });
       });
   }, []);
-  console.log(addedProducts, "sdsd");
-
+  useEffect(() => {
+    const cartAssoc = JSON.parse(localStorage.getItem("cart")) || {};
+    const newTotalPrice = addedProducts.data.reduce((total, product) => {
+      return total + product.price * (cartAssoc[product.id] || 0);
+    }, 0);
+    setTotalPrice(newTotalPrice);
+  }, [addedProducts]);
   if (addedProducts.loading) return "...loading";
 
   if (!addedProducts.data.length && !addedProducts.loading)
@@ -41,6 +46,8 @@ const CartPage = () => {
         <tbody>
           {addedProducts.data.map((product, index) => (
             <CartRow
+              setAddedProducts={setAddedProducts}
+              addedProducts={addedProducts}
               product={product}
               key={index}
               setTotalPrice={setTotalPrice}
