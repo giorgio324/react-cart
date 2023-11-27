@@ -19,13 +19,7 @@ const CartPage = () => {
         setAddedProducts({ data: addedItems, loading: false });
       });
   }, []);
-  useEffect(() => {
-    const cartAssoc = JSON.parse(localStorage.getItem("cart")) || {};
-    const newTotalPrice = addedProducts.data.reduce((total, product) => {
-      return total + product.price * (cartAssoc[product.id] || 0);
-    }, 0);
-    setTotalPrice(newTotalPrice);
-  }, [addedProducts]);
+
   if (addedProducts.loading) return "...loading";
 
   if (!addedProducts.data.length && !addedProducts.loading)
@@ -63,7 +57,7 @@ const CartPage = () => {
             fontWeight: 700,
           }}
         >
-          subtotal : {totalPrice}
+          subtotal : {totalPrice}$
         </p>
       </div>
     </>
